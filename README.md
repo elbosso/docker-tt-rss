@@ -1,3 +1,7 @@
+*** EVEN MORE IMPORTANT NOTICE ***
+The reason for deprecating this image is invalid since I was able to change just one line inside the Dockerfile to
+be able to build and use it on a raspberry 3B+!! I found the correct URI for the tarball here: https://gitlab.com/robconnolly/docker-ttrss/-/blob/master/Dockerfile
+
 *** IMPORTANT NOTICE ***  
 THIS IMAGE HAS BEEN DEPRECATED  
 We are no longer able to ingest tarballs from upstream repo  
