@@ -41,7 +41,7 @@ RUN \
  fi && \
  curl -o \
 	/tmp/ttrss.tar.gz -L \
-	"https://git.tt-rss.org/git/tt-rss/archive/${TT_RSS_VERSION}.tar.gz" && \
+	"https://git.tt-rss.org/fox/tt-rss/archive/master.tar.gz" && \
  tar xf \
  /tmp/ttrss.tar.gz -C \
 	/var/www/html/ --strip-components=1 && \
