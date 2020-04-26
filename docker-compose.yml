@@ -1,0 +1,55 @@
+#https://malura.de/blog/2019/01/17/meine-liebsten-docker-container.html
+version: "3.1"
+services:
+  pi-ttrss:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile.armhf
+#    image: linuxserver/tt-rss
+#    ports:
+#      - "80:80"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./config:/config
+    environment:
+      - TZ=Europe/Berlin
+    container_name: pi-ttrss
+    hostname: ttrss
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ttrss.rule=Host(`ttrss.pi-docker.lab`)"
+      - "traefik.http.services.ttrss.loadbalancer.server.port=80"
+      - "traefik.docker.network=traefik_proxy"
+    links:
+      - pi-ttrss-db
+    ports:
+      - 8081:80
+    networks:
+      - traefik_proxy
+      - default
+    depends_on:
+      - pi-ttrss-db
+#        condition: service_healthy
+
+  pi-ttrss-db:
+    image: postgres
+    container_name: pi-ttrss-db
+    restart: always
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data      
+    env_file:
+      - postgres.env
+#    healthcheck:
+#      test: ["CMD-SHELL", "pg_isready -U postgres"]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
+    networks:
+      - default
+
+networks:
+  traefik_proxy:
+    external:
+      name: pi_traefik_proxy
+      
