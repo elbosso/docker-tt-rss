@@ -20,7 +20,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.ttrss.rule=Host(`ttrss.pi-docker.lab`)"
       - "traefik.http.services.ttrss.loadbalancer.server.port=80"
-      - "traefik.docker.network=traefik_proxy"
+      - "traefik.docker.network=pi_traefik_proxy"
     links:
       - pi-ttrss-db
     ports:
