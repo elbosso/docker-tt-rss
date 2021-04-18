@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     build:
       context: .
-      dockerfile: Dockerfile.armhf
+      dockerfile: Dockerfile.aarch64
 #    image: linuxserver/tt-rss
 #    ports:
 #      - "80:80"
@@ -14,6 +14,7 @@ services:
       - ./config:/config
     environment:
       - TZ=Europe/Berlin
+#      - SELF_URL_PATH=https://ttrss.pi-docker.lab/
     container_name: pi-ttrss
     hostname: ttrss
     labels:
@@ -21,6 +22,7 @@ services:
       - "traefik.http.routers.ttrss.rule=Host(`ttrss.pi-docker.lab`)"
       - "traefik.http.services.ttrss.loadbalancer.server.port=80"
       - "traefik.docker.network=pi_traefik_proxy"
+      - "traefik.http.routers.ttrss.tls=true"
     links:
       - pi-ttrss-db
     ports:
@@ -33,7 +35,7 @@ services:
 #        condition: service_healthy
 
   pi-ttrss-db:
-    image: postgres
+    image: postgres:12
     container_name: pi-ttrss-db
     restart: always
     volumes:
@@ -52,4 +54,7 @@ networks:
   traefik_proxy:
     external:
       name: pi_traefik_proxy
+  default:
+    driver:
+      bridge
       
